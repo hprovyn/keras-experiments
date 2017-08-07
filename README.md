@@ -85,8 +85,14 @@ To obtain a good classifier that can distinguish between 25 different bottle cap
 
 To test the effects of background noise in training I created three training sets and two test sets.
 
-TRAINING [Original, Cropped Around the Cap, Original + Cropped]
-TEST [Original, Cropped Around the Cap]
+TRAINING
+* Background Noise
+* No Noise (cropped outside the cap)
+* Noise + No Noise
+
+TEST
+* Original
+* Cropped Around the Cap
 
 The original images contain significant background noise. The cropped images contain no background noise. I use opencv2.HoughCircles to automatically locate the cap in each image and set the remaining pixels to the VGG16 RGB mean values. This circle detection algorithm works very well despite the noise except for four images which I simply throw out. 
 
@@ -95,10 +101,11 @@ The original images contain significant background noise. The cropped images con
 Since the combined set contains twice the caps as the others, I perturb each of those images 20 times instead of 40. Now I have three training sets of ~10000 images.
 For each training and test image I compute the VGG16 embeddings and save to a file. I then take the embeddings from the training set to train a small fully connected model:
 
-noise	no-noise
-1. noise	94.0%	87.3%
-2. no-noise	87.9%	95.8%
-3. combined	96.1%	96.6%
+
+| | noise | no-noise |
+| noise | 94.0% | 87.3% |
+| no-noise |87.9% | 95.8% |
+| combined | 96.1% | 96.6% |
 
 ## Comparing each Model against the Test Sets
 
