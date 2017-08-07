@@ -40,6 +40,9 @@ TRAINING [Original, Cropped Around the Cap, Original + Cropped]
 TEST [Original, Cropped Around the Cap]
 
 The original images contain significant background noise. The cropped images contain no background noise. I use opencv2.HoughCircles to automatically locate the cap in each image and set the remaining pixels to the VGG16 RGB mean values. This circle detection algorithm works very well despite the noise except for four images which I simply throw out. 
+
+![Hough Circle Detection](hough2crop.png?raw=true "Hough Circle Detection")
+
 Since the combined set contains twice the caps as the others, I perturb each of those images 20 times instead of 40. Now I have three training sets of ~10000 images.
 For each training and test image I compute the VGG16 embeddings and save to a file. I then take the embeddings from the training set to train a small fully connected model:
 
