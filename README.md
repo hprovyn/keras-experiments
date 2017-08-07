@@ -31,7 +31,9 @@ Not bad at all, especially given the presence of this tricky pigeon - it's consi
 
 ![frillback](frillback_26.jpg?raw=true "frillback pouting")
 
-# Develop a classifier for bottle caps using a dozen images per cap
+# A Second Experiment - Bottle Caps
+
+## Develop a classifier for bottle caps using a dozen images
 
 I was inspired to create a bottle cap classifier using the Keras framework and VGG16 after reading the article https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html 
 To obtain a good classifier that can distinguish between 25 different bottle cap designs I take pictures of caps on a variety of backgrounds and lighting conditions. My training and test sets contain 8-13 and 4-6 original images per cap. To enlarge and perturb the training I use the Keras ImageDataGenerator to rotate, slightly shear and zoom each image 40 times. To verify rotational invariance of the model without distorting the test images I expand the test set by rotating each image 90 times.
