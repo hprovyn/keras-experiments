@@ -1,7 +1,15 @@
 # keras-experiments
-turn downloaded images into your custom classifier via keras, VGG16 (with circle detection to augment your training)
+simple convenience methods to quickly turn downloaded images into your custom classifier via Keras, VGG16 
 
-keras w/ theano backend
+Features
+
+* Automatic labeling and jpg conversion of a directory of downloaded images
+* Center cropping and resizing to 224 x 224 (VGG16 input size)
+* Hough circle detection to augment your training w/ noiseless images (if your domain is circular)
+* Augmentation using Keras ImageDataGenerator
+* Extracting and saving VGG16 embeddings, training classifier on your images, test
+
+Keras w/ Theano backend
 
 # Simple Example - Pigeon Classifier
 
@@ -14,7 +22,39 @@ See Example.py for simple example on 4-way pigeon classifier that gets over 90% 
 2. Download the pigeons
 3. Change paths for VGG16 and pigeons in example.py and run
 
-[code]Epoch 498/500
+```python
+vgg_weights_path = "C:\\Users\\Big Pigeon\\Downloads\\vgg16_weights.h5"
+root_dir = "C:\\Users\\Big Pigeon\\Documents\\Python Scripts\\pigeons"
+
+#adds carneau labels to labeled image dir, creates train/test sets, crop/resize all to 224 by 224
+def create_training_test(root_dir):
+    all_dir = os.path.join(root_dir, "all")
+    hip.create_labels(os.path.join(root_dir, "carneau"), all_dir, "carneau")
+    hip.create_train_test(root_dir, all_dir, ["barb", "carneau", "frillback", "pouter"], 0.2)
+    raw_train_dir = os.path.join(root_dir, "raw_train")
+    raw_test_dir = os.path.join(root_dir, "raw_test")
+    hip.crop_resize_to_squares(raw_train_dir, root_dir) #saves to "square224px"
+    hip.crop_resize_to_squares(raw_test_dir, root_dir, 320) #subsequent rotation step will resize to [224 x 224]
+    test_320px_dir = os.path.join(root_dir, "square320px")
+    hip.perform_rotations(90, test_320px_dir, root_dir)
+
+def experiment_harness(root_dir, augmentations, epochs):
+    to_augment_name = "square224px"
+    augmentation_desc = "imagedatagen_" + to_augment_name + "_" + str(augmentations)
+    train_dir = os.path.join(root_dir, augmentation_desc)
+    train_pkl = os.path.join(root_dir, to_augment_name + ".pkl")
+    test_dir = os.path.join(root_dir, "90_rotations")
+    test_dirs = [[test_dir, os.path.join(root_dir, "test.pkl")]]
+    m.dataGen(os.path.join(root_dir, to_augment_name), train_dir, augmentations)
+    computeAllEmbeddings(train_dir, test_dirs, train_pkl)
+    weights_path = os.path.join(root_dir, augmentation_desc + "model")
+    m.train_top_model(train_pkl, [test_dirs[0][1]], weights_path, train_dir, epochs)
+    
+create_training_test(root_dir)
+experiment_harness(root_dir, 40, 5)
+```
+
+Epoch 498/500
 5363/5363 [==============================] - 0s - loss: 7.5461e-04 - acc: 0.9996 - val_loss: 1.2522e-07 - val_acc: 1.0000
 Epoch 499/500
 5363/5363 [==============================] - 0s - loss: 0.0011 - acc: 0.9998 - val_loss: 0.0107 - val_acc: 0.9993
@@ -25,7 +65,7 @@ barb  accuracy:  0.907070707070707
 carneau  accuracy:  0.8555555555555555
 frillback  accuracy:  0.976984126984127
 pouter  accuracy:  0.8944444444444445
-accuracy:  0.9113378684807256[/code]
+accuracy:  0.9113378684807256
 
 Not bad at all, especially given the presence of this tricky pigeon - it's considered a frillback but it also looks like a pouter.
 
