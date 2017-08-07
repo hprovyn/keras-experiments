@@ -98,7 +98,7 @@ The original images contain significant background noise. The cropped images con
 
 ![Hough Circle Detection](hough2crop.png?raw=true "Hough Circle Detection")
 
-Since the combined set contains twice the caps as the others, I perturb each of those images 20 times instead of 40. Now I have three training sets of ~10000 images.
+Since the combined set contains twice the images than the others, I perturb each of those images 20 times instead of 40. Now I have three training sets of ~10000 images.
 For each training and test image I compute the VGG16 embeddings and save to a file. I then take the embeddings from the training set to train a small fully connected model:
 
 
