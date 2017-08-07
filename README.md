@@ -3,9 +3,12 @@ turn downloaded images into your custom classifier via keras, VGG16 (with circle
 
 keras w/ theano backend
 
-# Simple Example
+# Simple Example - Pigeon Classifier
 
-See Example.py for simple example on 4-way pigeon classifier
+![barb](barb_7.jpg?raw=true "barb")![frillback](frillback_33.jpg?raw=true "frillback")
+![pouter](pouter_8.jpg?raw=true "pouter")![carneau](Carneau%20Pigeon.jpg?raw=true "carneau")
+
+See Example.py for simple example on 4-way pigeon classifier that gets over 90% accuracy in minutes
 
 1. Download VGG16
 2. Download the pigeons
@@ -24,6 +27,9 @@ frillback  accuracy:  0.976984126984127
 pouter  accuracy:  0.8944444444444445
 accuracy:  0.9113378684807256[/code]
 
+Not bad at all, especially given the presence of this tricky pigeon - it's considered a frillback but it also looks like a pouter.
+
+![frillback](frillback_26.jpg?raw=true "frillback pouting")
 
 # Develop a classifier for bottle caps using a dozen images per cap
 
