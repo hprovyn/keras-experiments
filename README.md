@@ -6,6 +6,7 @@ Features
 * Automatic labeling and jpg conversion of a directory of downloaded images
 * Center cropping and resizing to 224 x 224 (VGG16 input size)
 * Hough circle detection to augment your training w/ noiseless images (if your domain is circular)
+* Random Train/Test creation
 * Augmentation using Keras ImageDataGenerator
 * Extracting and saving VGG16 embeddings, training classifier on your images, test
 
